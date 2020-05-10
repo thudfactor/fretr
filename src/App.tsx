@@ -1,6 +1,8 @@
 import React from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Instruction from "./components/Instruction";
+import Fretboard from "./components/Fretboard";
 
 function App() {
   return (
@@ -8,8 +10,8 @@ function App() {
       <Header />
       <main>
         <div className="flex">
-          <div className="flex-auto">fretboard goes here</div>
-          <div className="flex-auto">Informations go here</div>
+          <Fretboard />
+          <Instruction />
         </div>
       </main>
       <Footer />
