@@ -1,8 +1,8 @@
 import React from "react";
 
-export default function Header() {
+export default function Header({ className = "" }) {
   return (
-    <header className="bg-gray-500">
+    <header className={className}>
       <div>
         <a href="/">Fretr</a>
       </div>

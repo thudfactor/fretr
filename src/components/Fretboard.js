@@ -3,7 +3,7 @@ import { midiToNote } from "../utils/notation";
 import Instrument, { getInstrument } from "../controls/Instruments";
 import useToggle from "../controls/useToggle";
 
-export default function Fretboard() {
+export default function Fretboard({ className = "" }) {
   const defaultInstrument = getInstrument("ukulele");
   const [instrument, setInstrument] = useState(defaultInstrument.slug);
   const [frets, setFrets] = useState(defaultInstrument.frets);
@@ -16,14 +16,9 @@ export default function Fretboard() {
     return (
       <div
         key={`${instString}-${fret}`}
-        className={`relative text-center ${fretWire} p-2 octave-${octave} border-gray-600`}
+        className={`relative relative text-center ${fretWire} p-2 octave-${octave} border-gray-600`}
       >
-        <div className="string"></div>
-        {[3, 5, 7, 9, 12, 15, 17, 19, 21, 23].includes(fret) && (
-          <div className="inlay absolute inset-0 text-gray-100 text-2xl">
-            {fret === 12 ? "••" : "•"}
-          </div>
-        )}
+        <div className="absolute string inset-x-0 top-1/2 h-px bg-black opacity-25"></div>
         <div className={`noteName relative text-xs note-${note}`}>{note}</div>
       </div>
     );
@@ -44,6 +39,7 @@ export default function Fretboard() {
     }
   }
 
+  /*
   const tuner = (current, instString) => {
     return (
       <div className="p-2" key={`${tuner} - ${instString}`}>
@@ -65,6 +61,7 @@ export default function Fretboard() {
     newTuning[string] = parseInt(newNote);
     setTuning(newTuning);
   };
+  */
 
   const handleChange = ({ slug, name, tuning, frets }) => {
     setInstrument(slug);
@@ -72,16 +69,19 @@ export default function Fretboard() {
     setTuning(tuning);
   };
 
-  const reverseTuning = [...tuning].reverse();
-
   return (
-    <div>
-      <Instrument instrument={instrument} handleChange={handleChange} />
-      <LayoutToggle />
+    <div className={className}>
+      <div class="options mb-5 flex">
+        <Instrument
+          className="mr-2"
+          instrument={instrument}
+          handleChange={handleChange}
+        />
+        <LayoutToggle />
+      </div>
       <div
         className={`grid grid-flow-col gap-0 grid-rows-${tuning.length} bx-2`}
       >
-        {/*{reverseTuning.map((d, i) => tuner(d, i))} */}
         {notes}
       </div>
     </div>

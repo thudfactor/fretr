@@ -8,13 +8,23 @@ export const instrumentRack = [
     tunings: [
       {
         slug: "standard",
-        name: "Standard",
+        name: "C6 Reentrant (standard)",
         strings: [67, 60, 64, 69],
       },
       {
         slug: "lowg",
-        name: "Low G",
+        name: "C6 Low G",
         strings: [55, 60, 64, 69],
+      },
+      {
+        slug: "baritone",
+        name: "Baritone",
+        strings: [50, 55, 59, 64],
+      },
+      {
+        slug: "halfstep",
+        name: "B6",
+        strings: [66, 59, 63, 68],
       },
     ],
   },
@@ -37,6 +47,11 @@ export const instrumentRack = [
         slug: "dadgad",
         name: "DADGAD",
         strings: [38, 45, 50, 55, 57, 62],
+      },
+      {
+        slug: "halfstep",
+        name: "Half-Step Down",
+        strings: [39, 44, 49, 54, 58, 63],
       },
     ],
   },
@@ -65,7 +80,11 @@ export const getInstrument = (slug) => {
   });
 };
 
-export default function Instrument({ instrument = "guitar", handleChange }) {
+export default function Instrument({
+  instrument = "guitar",
+  className = "",
+  handleChange,
+}) {
   const [tuning, setTuning] = useState(`${instrument}-standard`);
 
   const swapInstrument = (newInstrument) => {
@@ -86,8 +105,9 @@ export default function Instrument({ instrument = "guitar", handleChange }) {
   const availableTunings = getInstrument(instrument).tunings;
 
   return (
-    <>
+    <div className={className}>
       <select
+        className="border border-gray-600 mr-2 text-xl"
         name="instrument"
         value={instrument}
         onChange={(e) => swapInstrument(e.target.value)}
@@ -99,6 +119,7 @@ export default function Instrument({ instrument = "guitar", handleChange }) {
         ))}
       </select>
       <select
+        className="border border-gray-600 text-xl"
         name="tuning"
         value={tuning}
         onChange={(e) => swapTuning(e.target.value)}
@@ -112,6 +133,6 @@ export default function Instrument({ instrument = "guitar", handleChange }) {
           </option>
         ))}
       </select>
-    </>
+    </div>
   );
 }

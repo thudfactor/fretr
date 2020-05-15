@@ -1,9 +1,9 @@
 import React from "react";
 
-export default function Footer() {
+export default function Footer({ className = "" }) {
   return (
-    <footer className="bg-gray-900 text-white">
-      <p>Here is some stuff about me</p>
+    <footer className={className}>
+      <p>Things everyone always ignores</p>
     </footer>
   );
 }
