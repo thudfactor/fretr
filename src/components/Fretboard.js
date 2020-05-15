@@ -33,7 +33,7 @@ export default function Fretboard({ className = "" }) {
         notes.push(note(string, fret));
       }
     } else {
-      for (let string = 0; string < tuning.length; string++) {
+      for (let string = 0; string <= tuning.length; string++) {
         notes.push(note(string, fret));
       }
     }
@@ -84,6 +84,7 @@ export default function Fretboard({ className = "" }) {
       >
         {notes}
       </div>
+      <div className={`grid grid-flow-col gap-0 grid-rows-1 bx-2`}></div>
     </div>
   );
 }
