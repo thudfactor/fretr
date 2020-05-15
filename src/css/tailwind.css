@@ -2,6 +2,38 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-.foo {
+.octave-1 {
   @apply bg-red-100;
+}
+
+.octave-2 {
+  @apply bg-red-200;
+}
+
+.octave-3 {
+  @apply bg-red-300;
+}
+
+.octave-4 {
+  @apply bg-blue-100;
+}
+
+.octave-5 {
+  @apply bg-blue-200;
+}
+
+.octave-6 {
+  @apply bg-blue-300;
+}
+
+.octave-7 {
+  @apply bg-green-100;
+}
+
+.octave-8 {
+  @apply bg-green-200;
+}
+
+.octave-9 {
+  @apply bg-green-300;
 }

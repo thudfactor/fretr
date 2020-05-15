@@ -13,6 +13,7 @@ const sharpNotes = [
   "B",
 ];
 
+/*
 const flatNotes = [
   "C",
   "Db",
@@ -27,15 +28,16 @@ const flatNotes = [
   "Bb",
   "B",
 ];
+*/
 
 export function noteToMidi(note, octave) {}
 
 export function midiToNote(midiNumber) {
-  if (midiNumber < 0) throw Error("Note number out of range");
-  if (midiNumber > 127) throw Error("Note number out of range");
+  if (midiNumber < 0) throw Error("Note number out of range " + midiNumber);
+  if (midiNumber > 127) throw Error("Note number out of range " + midiNumber);
 
-  const octive = Math.floor(midiNumber / 12);
+  const octave = Math.floor(midiNumber / 12) - 1;
   const note = sharpNotes[midiNumber % 12];
 
-  return `${note}${octive}`;
+  return { note, octave };
 }

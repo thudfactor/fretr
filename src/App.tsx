@@ -9,10 +9,7 @@ function App() {
     <div className="">
       <Header />
       <main>
-        <div className="flex">
-          <Fretboard />
-          <Instruction />
-        </div>
+        <Fretboard />
       </main>
       <Footer />
     </div>
