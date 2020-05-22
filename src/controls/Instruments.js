@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 
+export const instrumentRack = require("../data/instrumentRack.json");
+
+/*
 export const instrumentRack = [
   {
     slug: "ukulele",
@@ -73,6 +76,8 @@ export const instrumentRack = [
     ],
   },
 ];
+
+*/
 
 export const getInstrument = (slug) => {
   return instrumentRack.find((inst) => {
