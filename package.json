@@ -17,11 +17,11 @@
     "typescript": "~3.7.2"
   },
   "scripts": {
-    "start": "npm run postcss:css && react-scripts start",
-    "build": "npm run crossenv:set && npm run postcss:css && react-scripts build",
+    "start": "yarn postcss:css && react-scripts start",
+    "build": "yarn crossenv:set && npm run postcss:css && react-scripts build",
     "postcss:css": "tailwind build src/css/tailwind.css -o src/css/main.css",
     "crossenv:set": "cross-env NODE_ENV=production",
-    "prod": "npm run build; npm run build:lambda",
+    "prod": "yarn build; yarn build:lambda",
     "start:lambda": "netlify-lambda serve functions",
     "build:lambda": "netlify-lambda build functions",
     "test": "react-scripts test",
