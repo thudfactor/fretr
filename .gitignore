@@ -10,6 +10,7 @@
 
 # production
 /build
+/lambda
 
 # tailwind
 /src/css/main.css
