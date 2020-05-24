@@ -1,12 +1,12 @@
 import scales from "./scales.json";
 import flatNotes from "./flatNotes.json";
 import sharpNotes from "./sharpNotes.json";
-import { notDeepEqual } from "assert";
 
 interface scaleInterface {
   slug: string;
   name: string;
   description: string;
+  highlight: number[];
   formula: string;
 }
 
@@ -38,8 +38,6 @@ export function makeScale(root: string, slug: string): string[] {
     notesAtRoot = notesAtRoot.slice(parseInt(v));
     return note;
   });
-
-  console.log(slug, scale, notesAtRoot);
 
   return scale;
 }

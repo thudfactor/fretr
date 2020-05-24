@@ -53,3 +53,13 @@ test("Make an C minor pentatonic scale", () => {
   const scale = makeScale("C", "minor-pentatonic").join(" ");
   expect(scale).toBe("C D♯ F G A♯");
 });
+
+test("Make an E major blues scale", () => {
+  const scale = makeScale("E", "major-blues").join(" ");
+  expect(scale).toBe("E F♯ G G♯ B C♯");
+});
+
+test("Make an E minor blues scale", () => {
+  const scale = makeScale("E", "minor-blues").join(" ");
+  expect(scale).toBe("E G A A♯ B D");
+});
