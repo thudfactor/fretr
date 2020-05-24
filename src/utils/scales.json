@@ -1,0 +1,64 @@
+[{
+    "slug": "ionian",
+    "name": "Ionian",
+    "description": "",
+    "formula": "2 2 1 2 2 2 1"
+  },
+  {
+    "slug": "dorian",
+    "name": "Dorian",
+    "description": "",
+    "formula": "2 1 2 2 2 1 2"
+  },
+  {
+    "slug": "phryigian",
+    "name": "Prygian",
+    "description": "",
+    "formula": "1 2 2 2 1 2 2"
+  },
+  {
+    "slug": "lydian",
+    "name": "Lydian",
+    "description": "",
+    "formula": "2 2 2 1 2 2 1"
+  },
+  {
+    "slug": "mixolydian",
+    "name": "Mixolydian",
+    "description": "",
+    "formula": "2 2 1 2 2 1 2"
+  },
+  {
+    "slug": "aeolian",
+    "name": "Aeolian",
+    "description": "",
+    "formula": "2 1 2 2 1 2 2"
+  },
+  {
+    "slug": "locrian",
+    "name": "Locrian",
+    "description": "",
+    "formula": "1 2 2 1 2 2 2"
+  }, {
+    "slug": "harmonic-minor",
+    "name": "harminic-minor",
+    "description": "",
+    "formula": "2 1 2 2 1 3 1"
+  }, {
+    "slug": "major-pentatonic",
+    "name": "Major Pentatonic",
+    "description": "",
+    "formula": "2 2 3 2 2"
+  },
+  {
+    "slug": "minor-pentatonic",
+    "name": "Minor Pentatonic",
+    "description": "",
+    "formula": "3 2 2 3 2"
+  }, {
+    "slug": "chromatic",
+    "name": "Chromatic",
+    "description": "",
+    "formula": "1 1 1 1 1 1 1 1 1 1 1 1"
+  }
+]

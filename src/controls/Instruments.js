@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export const instrumentRack = require("../data/instrumentRack.json");
+export const instrumentRack = require("../utils/instrumentRack.json");
 
 export const getInstrument = (slug) => {
   return instrumentRack.find((inst) => {
