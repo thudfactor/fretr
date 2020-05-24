@@ -8,11 +8,13 @@ export default function Fretboard({ className = "" }) {
   const [instrument, setInstrument] = useState(defaultInstrument.slug);
   const [frets, setFrets] = useState(defaultInstrument.frets);
   const [tuning, setTuning] = useState(defaultInstrument.tunings[0].strings); // standard GCEA re-entrant tuning for the ukulele
+
   const [isTabLayout, LayoutToggle] = useToggle("High String on Top", true);
+  const [flats, FlatsToggle] = useToggle("Show Flats instead of Sharps", false);
 
   const note = (instString, fret) => {
     const fretWire = fret === 0 ? "border-r-4" : "border-r";
-    const { note, octave } = midiToNote(tuning[instString] + fret);
+    const { note, octave } = midiToNote(tuning[instString] + fret, { flats });
     return (
       <div
         key={`${instString}-${fret}`}
@@ -77,7 +79,8 @@ export default function Fretboard({ className = "" }) {
           instrument={instrument}
           handleChange={handleChange}
         />
-        <LayoutToggle />
+        <FlatsToggle className="mx-5" />
+        <LayoutToggle className="mx-5" />
       </div>
       <div
         className={`grid grid-flow-col gap-0 grid-rows-${tuning.length} bx-2`}

@@ -3,8 +3,8 @@ import React, { useState } from "react";
 const useToggle = (label, defaultState) => {
   const [state, setState] = useState(defaultState);
   const id = `use-toggle-${label.replace(" ", "").toLowerCase()}`;
-  const Toggle = () => (
-    <div class="flex items-center">
+  const Toggle = ({ className = "" }) => (
+    <div className={`flex items-center ${className}`}>
       <input
         type="checkbox"
         className="mr-2"
