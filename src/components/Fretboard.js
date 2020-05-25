@@ -118,7 +118,7 @@ export default function Fretboard({ className = "" }) {
             <div
               className={`absolute top-1/2 left-0 right-0 h-${sw}px -my-${
                 sw / 2
-              }px bg-black opacity-25`}
+              }px bg-gray-500 opacity-25`}
             ></div>
           </div>
         ))}
