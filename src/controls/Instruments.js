@@ -18,7 +18,7 @@ export default function Instrument({
   const swapInstrument = (newInstrument) => {
     const inst = getInstrument(newInstrument);
     setTuning(`${inst.slug}-${inst.tunings[0].slug}`);
-    handleChange({ ...inst, tuning: inst.tunings[0].strings });
+    handleChange({ ...inst, tuning: inst.tunings[0] });
   };
 
   const swapTuning = (newTuning) => {
@@ -26,7 +26,10 @@ export default function Instrument({
     setTuning(newTuning);
     const slug = newTuning.split("-")[1];
     const tuningDeets = inst.tunings.find((t) => t.slug === slug);
-    handleChange({ ...inst, tuning: tuningDeets.strings });
+    handleChange({
+      ...inst,
+      tuning: tuningDeets,
+    });
   };
 
   const availableTunings = getInstrument(instrument).tunings;

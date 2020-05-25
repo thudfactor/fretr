@@ -3,7 +3,6 @@ import { midiToNote } from "../utils/notation";
 import Instrument, { getInstrument } from "../controls/Instruments";
 import React, { useState } from "react";
 import ScaleSelector from "../controls/ScaleSelector";
-import useToggle from "../controls/useToggle";
 import Note from "./Note";
 
 export default function Fretboard({ className = "" }) {
@@ -12,14 +11,17 @@ export default function Fretboard({ className = "" }) {
   const [instrument, setInstrument] = useState(defaultInstrument.slug);
   const [frets, setFrets] = useState(defaultInstrument.frets);
   const [tuning, setTuning] = useState(defaultInstrument.tunings[0].strings); // standard GCEA re-entrant tuning for the ukulele
-  const [isTabLayout, LayoutToggle] = useToggle("High String on Top", true);
+  const [stringWidths, setStringWidths] = useState(
+    defaultInstrument.tunings[0].stringWidth
+  );
   const [flats, setFlats] = useState(false);
   const [scale, setScale] = useState("major-blues");
   const [root, setRoot] = useState("E");
+  const [inlays, setInlays] = useState(defaultInstrument.inlays);
 
   const scaleNotes = makeScale(root, scale);
 
-  const note = (instString, fret) => {
+  const note = (instString, fret, stringReport) => {
     const fretWire = fret === 0 ? "border-r-4" : "border-r";
     const { name, octave } = midiToNote(tuning[instString] + fret, { flats });
 
@@ -43,6 +45,8 @@ export default function Fretboard({ className = "" }) {
         octave={octave}
         highlightColor={highlightColor}
         noteName={name}
+        fretNumber={fret}
+        stringNumber={stringReport}
       />
     );
   };
@@ -51,21 +55,21 @@ export default function Fretboard({ className = "" }) {
 
   for (let fret = 0; fret <= frets; fret++) {
     // interestingly, fretted instruments count from 0 as well
-    if (isTabLayout) {
-      for (let string = tuning.length - 1; string >= 0; string--) {
-        notes.push(note(string, fret));
-      }
-    } else {
-      for (let string = 0; string < tuning.length; string++) {
-        notes.push(note(string, fret));
-      }
+    for (let string = 0; string < tuning.length; string++) {
+      // Strings are always numbered starting at string closest to the floor,
+      // which is the opposite way we have them ordered.
+      const stringReport = tuning.length - string;
+      notes.push(note(string, fret, stringReport));
     }
   }
 
-  const handleInstrumentChange = ({ slug, name, tuning, frets }) => {
+  const handleInstrumentChange = ({ slug, inlays, tuning, frets }) => {
     setInstrument(slug);
+    setInlays(inlays);
     setFrets(frets);
-    setTuning(tuning);
+    console.log(tuning);
+    setTuning(tuning.strings);
+    setStringWidths(tuning.stringWidth);
   };
 
   const handleScaleChange = ({ root, scale }) => {
@@ -91,14 +95,35 @@ export default function Fretboard({ className = "" }) {
           scale={scale}
           handleChange={handleScaleChange}
         />
-        <LayoutToggle className="mx-5" />
       </div>
-      <div
-        className={`grid grid-flow-col gap-0 grid-rows-${tuning.length} bx-2`}
-      >
+      <div className={`bg-white grid gap-0 bx-2 strings-${tuning.length}`}>
+        {inlays.map((pos) => (
+          <div
+            className={`relative row-start-1 col-start-${pos + 1} col-end-${
+              pos + 2
+            } row-end-${tuning.length + 1}`}
+          >
+            <div className="absolute transform -translate-x-1/2 -translate-y-1/2 -rotate-90 top-1/2 left-1/2 text-4xl leading-none">
+              {pos === 12 ? "••" : "•"}
+            </div>
+          </div>
+        ))}
+        {stringWidths.map((sw, i) => (
+          <div
+            key={`string-${i + 1}`}
+            className={`relative string-${i + 1} col-start-1 col-span-${
+              frets + 1
+            }`}
+          >
+            <div
+              className={`absolute top-1/2 left-0 right-0 h-${sw}px -my-${
+                sw / 2
+              }px bg-black opacity-25`}
+            ></div>
+          </div>
+        ))}
         {notes}
       </div>
-      <div className={`grid grid-flow-col gap-0 grid-rows-1 bx-2`}></div>
     </div>
   );
 }

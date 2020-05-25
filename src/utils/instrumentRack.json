@@ -2,67 +2,80 @@
     "slug": "ukulele",
     "name": "Ukulele",
     "frets": 18,
+    "inlays": [5, 7, 10, 12],
     "tunings": [{
         "slug": "standard",
         "name": "C6 Reentrant",
-        "strings": [67, 60, 64, 69]
+        "strings": [67, 60, 64, 69],
+        "stringWidth": [1, 6, 8, 2]
       },
       {
         "slug": "lowg",
         "name": "C6 Low G",
-        "strings": [55, 60, 64, 69]
+        "strings": [55, 60, 64, 69],
+        "stringWidth": [1, 2, 4, 6]
       },
       {
         "slug": "baritone",
         "name": "Baritone",
-        "strings": [50, 55, 59, 64]
+        "strings": [50, 55, 59, 64],
+        "stringWidth": [1, 2, 4, 6]
       },
       {
         "slug": "halfstep",
         "name": "B6",
-        "strings": [66, 59, 63, 68]
+        "strings": [66, 59, 63, 68],
+        "stringWidth": [1, 6, 8, 2]
       }
     ]
   },
   {
     "slug": "guitar",
     "name": "Guitar",
-    "frets": 24,
+    "inlays": [3, 5, 7, 9, 12, 15, 17, 19, 21, 23],
+    "frets": 22,
     "tunings": [{
         "slug": "standard",
         "name": "Standard",
-        "strings": [40, 45, 50, 55, 59, 64]
+        "strings": [40, 45, 50, 55, 59, 64],
+        "stringWidth": [1, 2, 4, 6, 8, 10]
       },
       {
         "slug": "dropd",
         "name": "Drop D",
-        "strings": [38, 45, 50, 55, 59, 64]
+        "strings": [38, 45, 50, 55, 59, 64],
+        "stringWidth": [1, 2, 4, 6, 8, 10]
       },
       {
         "slug": "dadgad",
         "name": "DADGAD",
-        "strings": [38, 45, 50, 55, 57, 62]
+        "strings": [38, 45, 50, 55, 57, 62],
+        "stringWidth": [1, 2, 4, 6, 8, 10]
       },
       {
         "slug": "halfstep",
         "name": "Half-Step Down",
-        "strings": [39, 44, 49, 54, 58, 63]
+        "strings": [39, 44, 49, 54, 58, 63],
+        "stringWidth": [1, 2, 4, 6, 8, 10]
       }
     ]
   },
   {
     "slug": "bass",
     "name": "Bass",
+    "inlays": [3, 5, 7, 9, 12, 15, 17],
     "frets": 20,
     "tunings": [{
         "slug": "standard",
         "name": "Standard",
-        "strings": [28, 33, 38, 43]
+        "strings": [28, 33, 38, 43],
+        "stringWidth": [6, 8, 10, 12]
       },
       {
         "slug": "dropd",
         "name": "Drop D",
-        "strings": [26, 33, 38, 43]
+        "strings": [26, 33, 38, 43],
+        "stringWidth": [6, 8, 10, 12]
       }
     ]
   }
