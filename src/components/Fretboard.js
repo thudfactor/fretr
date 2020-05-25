@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import { findScale, makeScale } from "../utils/scales";
 import { midiToNote } from "../utils/notation";
 import Instrument, { getInstrument } from "../controls/Instruments";
-import useToggle from "../controls/useToggle";
-import { findScale, makeScale } from "../utils/scales";
+import React, { useState } from "react";
 import ScaleSelector from "../controls/ScaleSelector";
+import useToggle from "../controls/useToggle";
+import Note from "./Note";
 
 export default function Fretboard({ className = "" }) {
   const defaultInstrument = getInstrument("ukulele");
+
   const [instrument, setInstrument] = useState(defaultInstrument.slug);
   const [frets, setFrets] = useState(defaultInstrument.frets);
   const [tuning, setTuning] = useState(defaultInstrument.tunings[0].strings); // standard GCEA re-entrant tuning for the ukulele
-
   const [isTabLayout, LayoutToggle] = useToggle("High String on Top", true);
   const [flats, setFlats] = useState(false);
-
   const [scale, setScale] = useState("major-blues");
   const [root, setRoot] = useState("E");
 
@@ -37,17 +37,13 @@ export default function Fretboard({ className = "" }) {
     })(scaleNotes.indexOf(name));
 
     return (
-      <div
+      <Note
         key={`${instString}-${fret}`}
-        className={`relative relative text-center ${fretWire} p-2 octave-${octave} border-gray-600`}
-      >
-        <div className="absolute string inset-x-0 top-1/2 h-px bg-black opacity-25"></div>
-        <div
-          className={`noteName mx-auto w-8 p-2 rounded-full relative text-xs ${highlightColor} note-${name}`}
-        >
-          {name}
-        </div>
-      </div>
+        fretWire={fretWire}
+        octave={octave}
+        highlightColor={highlightColor}
+        noteName={name}
+      />
     );
   };
 
@@ -60,35 +56,11 @@ export default function Fretboard({ className = "" }) {
         notes.push(note(string, fret));
       }
     } else {
-      for (let string = 0; string <= tuning.length; string++) {
+      for (let string = 0; string < tuning.length; string++) {
         notes.push(note(string, fret));
       }
     }
   }
-
-  /*
-  const tuner = (current, instString) => {
-    return (
-      <div className="p-2" key={`${tuner} - ${instString}`}>
-        <button
-          class="mr-2"
-          onClick={(e) => changeTuning(instString, current - 1)}
-        >
-          ⤺
-        </button>
-        <button onClick={(e) => changeTuning(instString, current + 1)}>
-          ⤻
-        </button>
-      </div>
-    );
-  };
-
-  const changeTuning = (string, newNote) => {
-    const newTuning = [...tuning];
-    newTuning[string] = parseInt(newNote);
-    setTuning(newTuning);
-  };
-  */
 
   const handleInstrumentChange = ({ slug, name, tuning, frets }) => {
     setInstrument(slug);
@@ -130,3 +102,27 @@ export default function Fretboard({ className = "" }) {
     </div>
   );
 }
+
+/*
+  const tuner = (current, instString) => {
+    return (
+      <div className="p-2" key={`${tuner} - ${instString}`}>
+        <button
+          class="mr-2"
+          onClick={(e) => changeTuning(instString, current - 1)}
+        >
+          ⤺
+        </button>
+        <button onClick={(e) => changeTuning(instString, current + 1)}>
+          ⤻
+        </button>
+      </div>
+    );
+  };
+
+  const changeTuning = (string, newNote) => {
+    const newTuning = [...tuning];
+    newTuning[string] = parseInt(newNote);
+    setTuning(newTuning);
+  };
+  */
