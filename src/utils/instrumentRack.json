@@ -32,7 +32,7 @@
   {
     "slug": "guitar",
     "name": "Guitar",
-    "inlays": [3, 5, 7, 9, 12, 15, 17, 19, 21, 23],
+    "inlays": [3, 5, 7, 9, 12, 15, 17, 19, 21],
     "frets": 22,
     "tunings": [{
         "slug": "standard",
