@@ -30,7 +30,7 @@ export default function ScaleSelector({
           className="border border-gray-600 mr-2 text-xl mx-4"
           name="rootNotes"
           value={root}
-          onChange={(e) => handleChange({ root: e.target.value, scale })}
+          onChange={(e) => handleChange(e.target.value, scale)}
         >
           {rootNotes.map((r) => (
             <option key={r} value={r}>
@@ -45,7 +45,7 @@ export default function ScaleSelector({
           className="border border-gray-600 mr-2 text-xl mx-4"
           name="scale"
           value={scale}
-          onChange={(e) => handleChange({ root, scale: e.target.value })}
+          onChange={(e) => handleChange(root, e.target.value)}
         >
           {scales.map((s) => (
             <option key={s.slug} value={s.slug}>

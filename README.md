@@ -1,44 +1,58 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Fretr app
 
-## Available Scripts
+## Getting started
 
-In the project directory, you can run:
+I like to develop this project using a Docker container, but it is not strictly necessary. If you are not going to use docker, be aware that this project uses **Node 14.11**.
 
-### `yarn start`
+The docker image I use layers [ttyd](https://tsl0922.github.io/ttyd/) over the top of the official Node container. This lets you connect to `localhost:3001` to run commands on the container. So, to get started:
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. Install Docker if you haven't already.
+2. Run `docker-compose up` in the project root (where this file is)
+3. Point your browser to `localhost:3001.` You should get what looks like a terminal in your browser window.
+4. `yarn install`
+5. `yarn start`
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Implementation details
 
-### `yarn test`
+Fretr is a web application that helps fretted instrument musicians find and learn notes on their instrument fretboard. It potentially works for any fretted instrument with regularly spaced frets using 12-tone equal temperament. For example: the guitar, the ukulele, the baritone, and bass guitar, and the mandolin.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Instrument data is stored as a JSON data structure here: `/src/utils/instrumentRack.json`. In this data file you can set the number of frets, the position of inlays, and any tunings you want to provide for the instrument. For example, here is a definition for a four-string, 18-fret ukulele with standard ("Reentrant") and Low G tuning.
 
-### `yarn build`
+```json
+{
+  "slug": "ukulele",
+  "name": "Ukulele",
+  "frets": 18,
+  "inlays": [5, 7, 10, 12],
+  "tunings": [
+    {
+      "slug": "standard",
+      "name": "C6 Reentrant",
+      "strings": [67, 60, 64, 69],
+      "stringWidth": [1, 6, 8, 2]
+    },
+    {
+      "slug": "lowg",
+      "name": "C6 Low G",
+      "strings": [55, 60, 64, 69],
+      "stringWidth": [1, 2, 4, 6]
+    }
+  ]
+}
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The array length of the `strings` property for a tuning dictates the number of strings the instrument has. This should be consistent across all tunings for this instrument. This means a seven-string guitar or a five-string bass should be defined as its own instrument, not an alternate tuning on a six-string. The numbers assigned to each string are the MIDI codes for the note played when the string is plucked open. In this convention, "Middle C" on a keyboard is `60`.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+In addition to showing the notes on the fretboards of these instruments, Fretr can also display a variety of scales. Scales are defined independently of instruments here: `/src/utils/scales.json`. For example, here is a definition of the Ionian (or major) scale:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```json
+{
+  "slug": "ionian",
+  "name": "Major (Ionian)",
+  "description": "",
+  "highlight": [],
+  "formula": "2 2 1 2 2 2 1"
+},
+```
 
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Scales are not defined by notes but by the relationships between the notes, starting at an arbitrary root note. That is, the difference between the 'A Major' scale and the 'F Major' scale is simply the starting position. The property `formula` in the list above describes the interval between each notes. '2' and '1' correspond to what music instructors typically call a 'Whole Step' and 'Half Step,' so the major scale pattern of `W W H W W W H` translates to `2 2 1 2 2 2 1` above. Numbers are used instead of letters because some scales (e.g., pentatonic) have more than a whole step between notes. The number representation also makes midi math convenient.

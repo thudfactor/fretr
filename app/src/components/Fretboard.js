@@ -1,29 +1,46 @@
 import { findScale, makeScale } from "../utils/scales";
 import { midiToNote } from "../utils/notation";
-import Instrument, { getInstrument } from "../controls/Instruments";
+import Instrument, { getInstrument, getTuning } from "../controls/Instruments";
 import React, { useState } from "react";
 import ScaleSelector from "../controls/ScaleSelector";
 import Note from "./Note";
+import storageAvailable from "storage-available";
+
+const canUseStorage = storageAvailable("localStorage");
+const showFlats = (root) => {
+  return ["G♭", "D♭", "A♭", "E♭", "B♭", "F"].indexOf(root) >= 0;
+};
 
 export default function Fretboard({ className = "" }) {
-  const defaultInstrument = getInstrument("ukulele");
+  const defaultState = {
+    instrument: "ukulele",
+    tuning: "standard",
+    root: "C",
+    scale: "ionian",
+  };
 
-  const [instrument, setInstrument] = useState(defaultInstrument.slug);
-  const [frets, setFrets] = useState(defaultInstrument.frets);
-  const [tuning, setTuning] = useState(defaultInstrument.tunings[0].strings); // standard GCEA re-entrant tuning for the ukulele
-  const [stringWidths, setStringWidths] = useState(
-    defaultInstrument.tunings[0].stringWidth
-  );
-  const [flats, setFlats] = useState(false);
-  const [scale, setScale] = useState("major-blues");
-  const [root, setRoot] = useState("E");
-  const [inlays, setInlays] = useState(defaultInstrument.inlays);
+  const fretrState = canUseStorage
+    ? { ...defaultState, ...JSON.parse(localStorage.getItem("fretrState")) }
+    : defaultState;
+
+  const defaultInstrument = getInstrument(fretrState.instrument);
+  const defaultTuning = getTuning(fretrState.instrument, fretrState.tuning);
+
+  const [instrument, setInstrument] = useState(defaultInstrument);
+  const [tuning, setTuning] = useState(defaultTuning);
+  const [scale, setScale] = useState(fretrState.scale);
+  const [root, setRoot] = useState(fretrState.root);
 
   const scaleNotes = makeScale(root, scale);
 
+  const { inlays, frets } = instrument;
+  const { stringWidth, strings } = tuning;
+
   const note = (instString, fret, stringReport) => {
     const fretWire = fret === 0 ? "border-r-4" : "border-r";
-    const { name, octave } = midiToNote(tuning[instString] + fret, { flats });
+    const { name, octave } = midiToNote(strings[instString] + fret, {
+      flats: showFlats(root),
+    });
 
     const { highlight } = findScale(scale);
 
@@ -55,31 +72,40 @@ export default function Fretboard({ className = "" }) {
 
   for (let fret = 0; fret <= frets; fret++) {
     // interestingly, fretted instruments count from 0 as well
-    for (let string = 0; string < tuning.length; string++) {
+    for (let string = 0; string < strings.length; string++) {
       // Strings are always numbered starting at string closest to the floor,
       // which is the opposite way we have them ordered.
-      const stringReport = tuning.length - string;
+      const stringReport = strings.length - string;
       notes.push(note(string, fret, stringReport));
     }
   }
 
-  const handleInstrumentChange = ({ slug, inlays, tuning, frets }) => {
-    setInstrument(slug);
-    setInlays(inlays);
-    setFrets(frets);
-    console.log(tuning);
-    setTuning(tuning.strings);
-    setStringWidths(tuning.stringWidth);
+  const handleInstrumentChange = (newInstrument, newTuning) => {
+    if (canUseStorage) {
+      const newFretrState = {
+        instrument: newInstrument.slug,
+        tuning: newTuning.slug,
+        root,
+        scale,
+      };
+      localStorage.setItem("fretrState", JSON.stringify(newFretrState));
+    }
+    setInstrument(newInstrument);
+    setTuning(newTuning);
   };
 
-  const handleScaleChange = ({ root, scale }) => {
-    setRoot(root);
-    setScale(scale);
-    if (["G♭", "D♭", "A♭", "E♭", "B♭", "F"].indexOf(root) >= 0) {
-      setFlats(true);
-    } else {
-      setFlats(false);
+  const handleScaleChange = (newRoot, newScale) => {
+    if (canUseStorage) {
+      const newFretrState = {
+        instrument: instrument.slug,
+        tuning: tuning.slug,
+        root: newRoot,
+        scale: newScale,
+      };
+      localStorage.setItem("fretrState", JSON.stringify(newFretrState));
     }
+    setRoot(newRoot);
+    setScale(newScale);
   };
 
   return (
@@ -88,6 +114,7 @@ export default function Fretboard({ className = "" }) {
         <Instrument
           className="mr-2"
           instrument={instrument}
+          tuning={tuning}
           handleChange={handleInstrumentChange}
         />
         <ScaleSelector
@@ -99,16 +126,17 @@ export default function Fretboard({ className = "" }) {
       <div className={`bg-white grid gap-0 bx-2 strings-${tuning.length}`}>
         {inlays.map((pos) => (
           <div
+            key={`inlay-${pos}`}
             className={`relative row-start-1 col-start-${pos + 1} col-end-${
               pos + 2
-            } row-end-${tuning.length + 1}`}
+            } row-end-${tuning.strings.length + 1}`}
           >
             <div className="absolute transform -translate-x-1/2 -translate-y-1/2 -rotate-90 top-1/2 left-1/2 text-4xl leading-none">
               {pos === 12 ? "••" : "•"}
             </div>
           </div>
         ))}
-        {stringWidths.map((sw, i) => (
+        {stringWidth.map((sw, i) => (
           <div
             key={`string-${i + 1}`}
             className={`relative string-${i + 1} col-start-1 col-span-${

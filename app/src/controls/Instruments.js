@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 export const instrumentRack = require("../utils/instrumentRack.json");
 
@@ -8,31 +8,31 @@ export const getInstrument = (slug) => {
   });
 };
 
+export const getTuning = (instrument, tuning) => {
+  const { tunings } = getInstrument(instrument);
+  return tunings.find((t) => {
+    return t.slug === tuning;
+  });
+};
+
 export default function Instrument({
-  instrument = "guitar",
+  instrument,
+  tuning,
   className = "",
   handleChange,
 }) {
-  const [tuning, setTuning] = useState(`${instrument}-standard`);
+  const availableTunings = instrument.tunings;
 
   const swapInstrument = (newInstrument) => {
-    const inst = getInstrument(newInstrument);
-    setTuning(`${inst.slug}-${inst.tunings[0].slug}`);
-    handleChange({ ...inst, tuning: inst.tunings[0] });
+    handleChange(
+      getInstrument(newInstrument),
+      getTuning(newInstrument, "standard")
+    );
   };
 
   const swapTuning = (newTuning) => {
-    const inst = getInstrument(instrument);
-    setTuning(newTuning);
-    const slug = newTuning.split("-")[1];
-    const tuningDeets = inst.tunings.find((t) => t.slug === slug);
-    handleChange({
-      ...inst,
-      tuning: tuningDeets,
-    });
+    handleChange(instrument, getTuning(instrument.slug, newTuning));
   };
-
-  const availableTunings = getInstrument(instrument).tunings;
 
   return (
     <div className={className}>
@@ -41,7 +41,7 @@ export default function Instrument({
         <select
           className="border border-gray-600 mr-2 text-xl mx-4"
           name="instrument"
-          value={instrument}
+          value={instrument.slug}
           onChange={(e) => swapInstrument(e.target.value)}
         >
           {instrumentRack.map((inst) => (
@@ -56,13 +56,13 @@ export default function Instrument({
         <select
           className="border border-gray-600 text-xl mx-4"
           name="tuning"
-          value={tuning}
+          value={tuning.slug}
           onChange={(e) => swapTuning(e.target.value)}
         >
           {availableTunings.map((t) => (
             <option
               key={`instrument-${instrument}-${t.slug}`}
-              value={`${instrument}-${t.slug}`}
+              value={`${t.slug}`}
             >
               {t.name}
             </option>
