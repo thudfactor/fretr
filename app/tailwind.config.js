@@ -13,6 +13,7 @@ const spacingExpansion = {
   "12px": "12px",
 };
 
+
 const gridRowExpansion = {
   "7": "7",
   "8": "8",
@@ -114,6 +115,10 @@ module.exports = {
       gridRowStart: gridRowExpansion,
       gridRowEnd: gridRowExpansion,
     },
+    fontFamily: {
+      'sans':['Noto Sans JP','Arial','Helvetica','sans'],
+      'display':['Satisfy','serif']
+    }
   },
   variants: {},
   plugins: [],

@@ -13,7 +13,7 @@ export default function Note({
       className={`note relative text-center p-2 border-gray-600 ${fretWire} octave-${octave} string-${stringNumber} fret-${fretNumber}`}
     >
       <div
-        className={`noteName mx-auto w-12 font-bold p-2 rounded-full relative text-base ${highlightColor} note-${noteName}`}
+        className={`noteName mx-auto w-8 font-medium p-1 rounded-md relative text-xs ${highlightColor} note-${noteName}`}
       >
         {noteName}
       </div>

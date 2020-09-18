@@ -123,7 +123,7 @@ export default function Fretboard({ className = "" }) {
           handleChange={handleScaleChange}
         />
       </div>
-      <div className={`bg-white grid gap-0 bx-2 strings-${tuning.length}`}>
+      <div className={`bg-white grid gap-0 max-w-full overflow-x-scroll bx-2 strings-${tuning.length}`}>
         {inlays.map((pos) => (
           <div
             key={`inlay-${pos}`}
