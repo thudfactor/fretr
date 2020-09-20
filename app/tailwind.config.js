@@ -1,103 +1,61 @@
-const spacingExpansion = {
-  "1px": "1px",
-  "2px": "2px",
-  "3px": "3px",
-  "4px": "4px",
-  "5px": "5px",
-  "6px": "6px",
-  "7px": "7px",
-  "8px": "8px",
-  "9px": "9px",
-  "10px": "10px",
-  "11px": "11px",
-  "12px": "12px",
-};
+// The fretboard is generally a very large grid, so let's create a lot more
+// grid classes than tailwind generally gives us.
 
+// Handy range generator function to give us arrays of values
+// between certain numbers.
+function* range(start, end) {
+  for (let i = start; i <= end; i++) {
+    yield i;
+  }
+}
 
-const gridRowExpansion = {
-  "7": "7",
-  "8": "8",
-  "9": "9",
-  "10": "10",
-  "11": "11",
-  "12": "12",
-  "13": "13",
-  "14": "14",
-  "15": "15",
-  "16": "16",
-  "17": "17",
-  "18": "18",
-  "19": "19",
-  "20": "20",
-  "21": "21",
-  "22": "22",
-  "23": "23",
-  "24": "24",
-  "25": "25",
-  "26": "26",
-};
+// Tailwind configuration elements are all objects
+// where the key is used as part of the class name
+// and the value is the corresponding CSS property.
+//
+// Spreading across the range function will let us
+// create these quite rapidly, as opposed to hand-writing
+// the object litereals.
+const spacingExpansion = Object.fromEntries(
+  [...range(1, 12)].map((i) => [`${i}px`, `${i}px`])
+);
 
-const gridColExpansion = {
-  "13": "13",
-  "14": "14",
-  "15": "15",
-  "16": "16",
-  "17": "17",
-  "18": "18",
-  "19": "19",
-  "20": "20",
-  "21": "21",
-  "22": "22",
-  "23": "23",
-  "24": "24",
-  "25": "25",
-  "26": "26",
-};
+// We can start this at 7 because tailwind provides 1-6
+const gridRowExpansion = Object.fromEntries(
+  [...range(7, 26)].map((i) => [i, `${i}`])
+);
 
-const gridColSpanExpansion = {
-  "span-13": "span 13 / span 13",
-  "span-14": "span 14 / span 14",
-  "span-15": "span 15 / span 15",
-  "span-16": "span 16 / span 16",
-  "span-17": "span 17 / span 17",
-  "span-18": "span 18 / span 18",
-  "span-19": "span 19 / span 19",
-  "span-20": "span 20 / span 20",
-  "span-21": "span 21 / span 21",
-  "span-22": "span 22 / span 22",
-  "span-23": "span 23 / span 23",
-  "span-24": "span 24 / span 24",
-  "span-25": "span 25 / span 25",
-  "span-26": "span 26 / span 26",
-  "span-27": "span 27 / span 27",
-  "span-28": "span 28 / span 28",
-  "span-29": "span 29 / span 29",
-  "span-30": "span 30 / span 30",
-};
+// similar
+const gridColExpansion = Object.fromEntries(
+  [...range(13, 26)].map((i) => [i, `${i}`])
+);
 
-const borderWidthsExpansion = {
-  "1": "1px",
-  "3": "3px",
-  "5": "5px",
-  "6": "6px",
-  "7": "7px",
-  "9": "9px",
-  "10": "10px",
-  "11": "11px",
-  "12": "12px",
-};
+// similar
+const gridColSpanExpansion = Object.fromEntries(
+  [...range(13, 30)].map((i) => [`span-${i}`, `span ${i} / span ${i}`])
+);
 
+const borderWidthsExpansion = Object.fromEntries(
+  [...range(1, 12)].map((i) => [i, `${i}px`])
+);
+
+// TODO: Invalidate need for whitelistPatterns
+// Whitelist patterns target fretboard layout classes that are composed programatically,
+// in violation of tailwind best practices
 module.exports = {
+  // opt-in to early deprications, tw2.0 behavior
+  future: {
+    removeDeprecatedGapUtilities: true,
+    purgeLayersByDefault: true,
+  },
   purge: {
     content: [
-      "src/**/*.tsx",
-      "src/**/*.jsx",
-      "src/**/*.html",
-      "public/**/*.html",
+      "./src/**/*.tsx",
+      "./src/**/*.js",
+      "./src/**/*.html",
+      "./public/**/*.html",
     ],
-    options: {
-      whitelist: ["bg-red-500", "px-4"],
-    },
+    options: { whitelistPatterns: [/(col|row)-(start|span|end)*/, /px$/] },
   },
   theme: {
     extend: {
@@ -116,9 +74,9 @@ module.exports = {
       gridRowEnd: gridRowExpansion,
     },
     fontFamily: {
-      'sans':['Noto Sans JP','Arial','Helvetica','sans'],
-      'display':['Satisfy','serif']
-    }
+      sans: ["Noto Sans JP", "Arial", "Helvetica", "sans"],
+      display: ["Satisfy", "serif"],
+    },
   },
   variants: {},
   plugins: [],

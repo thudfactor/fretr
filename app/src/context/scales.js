@@ -2,19 +2,33 @@ import scales from "./scales.json";
 import flatNotes from "./flatNotes.json";
 import sharpNotes from "./sharpNotes.json";
 
-interface scaleInterface {
-  slug: string;
-  name: string;
-  description: string;
-  highlight: number[];
-  formula: string;
-}
+export const rootNotes = [
+  "C",
+  "G",
+  "D",
+  "A",
+  "E",
+  "B",
+  "F♯",
+  "G♭",
+  "D♭",
+  "A♭",
+  "E♭",
+  "B♭",
+  "F",
+];
 
-export function findScale(slug: string): scaleInterface | undefined {
+export function findScale(slug) {
   return scales.find((el) => el.slug === slug);
 }
 
-export function makeScale(root: string, slug: string): string[] {
+export function getScaleList() {
+  return scales.map(({ slug, name }) => {
+    return { slug, name };
+  });
+}
+
+export function makeScale(root, slug) {
   let flats = false;
   let noteSource = [];
   let rootIndex = sharpNotes.indexOf(root);

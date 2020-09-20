@@ -1,5 +1,6 @@
 import React from "react";
-import scales from "../utils/scales.json";
+import { rootNotes, getScaleList } from "../context/scales";
+import Select from "./Select";
 
 export default function ScaleSelector({
   root,
@@ -7,53 +8,34 @@ export default function ScaleSelector({
   className,
   handleChange,
 }) {
-  const rootNotes = [
-    "C",
-    "G",
-    "D",
-    "A",
-    "E",
-    "B",
-    "F♯",
-    "G♭",
-    "D♭",
-    "A♭",
-    "E♭",
-    "B♭",
-    "F",
-  ];
+  function swapRoot(newRoot) {
+    handleChange(newRoot, scale);
+  }
+
+  function swapScale(newScale) {
+    handleChange(root, newScale);
+  }
+
+  const rootOptions = rootNotes.map((v) => {
+    return { name: v, slug: v };
+  });
+
   return (
     <div className={className}>
-      <label>
-        Root
-        <select
-          className="border border-gray-600 mr-2 text-xl mx-4"
-          name="rootNotes"
-          value={root}
-          onChange={(e) => handleChange(e.target.value, scale)}
-        >
-          {rootNotes.map((r) => (
-            <option key={r} value={r}>
-              {r}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label>
-        Scale
-        <select
-          className="border border-gray-600 mr-2 text-xl mx-4"
-          name="scale"
-          value={scale}
-          onChange={(e) => handleChange(root, e.target.value)}
-        >
-          {scales.map((s) => (
-            <option key={s.slug} value={s.slug}>
-              {s.name}
-            </option>
-          ))}
-        </select>
-      </label>
+      <Select
+        value={root}
+        options={rootOptions}
+        name="root"
+        label="Root"
+        onChange={swapRoot}
+      />
+      <Select
+        value={scale}
+        options={getScaleList()}
+        name="scale"
+        label="Scale"
+        onChange={swapScale}
+      />
     </div>
   );
 }

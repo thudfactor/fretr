@@ -1,12 +1,16 @@
-import { findScale, makeScale } from "../utils/scales";
-import { midiToNote } from "../utils/notation";
-import Instrument, { getInstrument, getTuning } from "../controls/Instruments";
+import { findScale, makeScale } from "../context/scales";
+import { midiToNote } from "../context/notation";
+import { getInstrument, getTuning } from "../context/instrumentRack";
+import InstrumentSelector from "../controls/InstrumentSelector";
 import React, { useState } from "react";
 import ScaleSelector from "../controls/ScaleSelector";
 import Note from "./Note";
+import Inlay from "./Inlay";
+import String from "./String";
 import storageAvailable from "storage-available";
 
 const canUseStorage = storageAvailable("localStorage");
+
 const showFlats = (root) => {
   return ["G♭", "D♭", "A♭", "E♭", "B♭", "F"].indexOf(root) >= 0;
 };
@@ -111,7 +115,7 @@ export default function Fretboard({ className = "" }) {
   return (
     <div className={className}>
       <div className="options mb-5 flex">
-        <Instrument
+        <InstrumentSelector
           className="mr-2"
           instrument={instrument}
           tuning={tuning}
@@ -123,32 +127,23 @@ export default function Fretboard({ className = "" }) {
           handleChange={handleScaleChange}
         />
       </div>
-      <div className={`bg-white grid gap-0 max-w-full overflow-x-scroll bx-2 strings-${tuning.length}`}>
-        {inlays.map((pos) => (
-          <div
-            key={`inlay-${pos}`}
-            className={`relative row-start-1 col-start-${pos + 1} col-end-${
-              pos + 2
-            } row-end-${tuning.strings.length + 1}`}
-          >
-            <div className="absolute transform -translate-x-1/2 -translate-y-1/2 -rotate-90 top-1/2 left-1/2 text-4xl leading-none">
-              {pos === 12 ? "••" : "•"}
-            </div>
-          </div>
+      <div
+        className={`bg-white grid gap-0 max-w-full overflow-x-scroll bx-2 strings-${tuning.length}`}
+      >
+        {inlays.map((fret) => (
+          <Inlay
+            key={`inlay-${fret}`}
+            fret={fret}
+            numStrings={tuning.strings.length}
+          />
         ))}
         {stringWidth.map((sw, i) => (
-          <div
+          <String
             key={`string-${i + 1}`}
-            className={`relative string-${i + 1} col-start-1 col-span-${
-              frets + 1
-            }`}
-          >
-            <div
-              className={`absolute top-1/2 left-0 right-0 h-${sw}px -my-${
-                sw / 2
-              }px bg-gray-500 opacity-25`}
-            ></div>
-          </div>
+            frets={frets}
+            stringNumber={i}
+            stringWidth={sw}
+          />
         ))}
         {notes}
       </div>
