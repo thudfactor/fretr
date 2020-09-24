@@ -3,7 +3,7 @@ import React from "react";
 export default function Select({ value, options, label, name, onChange }) {
   return (
     <label className="mr-6">
-      {label}
+      <span className="text-white">{label}</span>
       <select
         name={name}
         value={value}

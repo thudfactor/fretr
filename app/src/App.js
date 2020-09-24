@@ -8,8 +8,8 @@ function App() {
   return (
     <div className="absolute inset-0 flex flex-col">
       <Header className="p-5 bg-black text-white" />
-      <main className="flex-full bg-gray-200">
-        <Fretboard className="p-5 bg-orange-100 border-b border-black" />
+      <main className="flex-full bg-gray-900">
+        <Fretboard className="p-5 bg-orange-900 border-b border-orange-700" />
         <Instruction />
       </main>
       <Footer className="p-5 bg-black text-white" />
